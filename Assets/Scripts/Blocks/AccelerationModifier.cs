@@ -13,4 +13,10 @@ public class AccelerationModifier : ModifierBlock
     {
         accelerationMultiplier = multiplier;
     }
+
+    // Override method to apply the acceleration modifier to the projectile
+    public override void ApplyMod(Projectile projectile)
+    {
+        projectile.MultiplySpeed(accelerationMultiplier);
+    }
 }

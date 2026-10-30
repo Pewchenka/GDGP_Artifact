@@ -20,6 +20,7 @@ public class Wand : MonoBehaviour
         //temporary
         blocks[0] = new AccelerationModifier(2f);
         blocks[1] = new ProjectileBlock(projectilePrefab, 10f);
+        blocks[2] = new ProjectileBlock(projectilePrefab, 10f);
         blocks[3] = new ProjectileBlock(projectilePrefab, 3f);
     }
 
@@ -49,7 +50,12 @@ public class Wand : MonoBehaviour
                 Debug.Log($"Modifiers collected: {modifiers.Count}");
 
                 GameObject projectile = Instantiate(projectileBlock.Prefab, transform.position, transform.rotation);
-                projectile.GetComponent<Projectile>().Initialize(projectileBlock.Speed);
+                Projectile projectileComponent = projectile.GetComponent<Projectile>();
+                projectileComponent.Initialize(projectileBlock.Speed);
+
+                // Apply all collected modifiers to the projectile
+                projectileComponent.ApplyModifiers(modifiers);
+
                 return;
             }
 
