@@ -5,6 +5,10 @@ public class Projectile : MonoBehaviour
 {
     private float speed;
 
+    // Chain of modifiers
+    private List<ModifierBlock> modifierChain;
+    private int nextModifierIndex;
+
     public void Initialize(float initialSpeed)
     {
         speed = initialSpeed;
@@ -25,13 +29,19 @@ public class Projectile : MonoBehaviour
 
     public void ApplyModifiers(List<ModifierBlock> modifiers)
     {
+        modifierChain = modifiers;
+        nextModifierIndex = 0;
+
         //Apply all collected modifiers to the projectile
         // Polymorphic
-        //Temporary, before the splittingModifier
-        for (int ammountMod = 0; ammountMod < modifiers.Count; ammountMod++)
+
+        while (nextModifierIndex < modifierChain.Count)
         {
-            modifiers[ammountMod].ApplyMod(this);
+            ModifierBlock curMod = modifierChain[nextModifierIndex];
+            nextModifierIndex++;
+            curMod.ApplyMod(this);
         }
+
     }
 
 }
