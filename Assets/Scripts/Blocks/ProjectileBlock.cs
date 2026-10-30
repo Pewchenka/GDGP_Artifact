@@ -6,7 +6,7 @@ public class ProjectileBlock : SpellBlock
     private float projectileSpeed;
 
 
-    //Incapsulated properties to access from other classes
+    //Encapsulated properties to access from other classes
     public GameObject Prefab => projectilePrefab;
     public float Speed => projectileSpeed;
 

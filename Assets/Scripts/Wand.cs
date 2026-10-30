@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Wand : MonoBehaviour
 {
@@ -17,14 +18,18 @@ public class Wand : MonoBehaviour
         currentBlockIndex = 0;
 
         //temporary
-        blocks[0] = new ProjectileBlock(projectilePrefab, 10f);
-        blocks[2] = new ProjectileBlock(projectilePrefab, 3f);
+        blocks[0] = new AccelerationModifier(2f);
+        blocks[1] = new ProjectileBlock(projectilePrefab, 10f);
+        blocks[3] = new ProjectileBlock(projectilePrefab, 3f);
     }
 
     //Test method (right click on the scirpt component in the inspector)
     [ContextMenu("Use Spell")]
     private void UseSpell()
     {
+        // List to hold modifier to apply to the projectile
+        List<ModifierBlock> modifiers = new List<ModifierBlock>();
+
         // skip empty blocks and find the next available spell block
         for (int i = 0; i < size; i++)
         {
@@ -32,9 +37,17 @@ public class Wand : MonoBehaviour
 
             currentBlockIndex = (currentBlockIndex + 1) % size; // Move to the next block circulary
 
+            // Collecting modifiers
+            if (block is ModifierBlock modifier)
+            {
+                modifiers.Add(modifier);
+                continue;
+            }
 
             if (block is ProjectileBlock projectileBlock)
             {
+                Debug.Log($"Modifiers collected: {modifiers.Count}");
+
                 GameObject projectile = Instantiate(projectileBlock.Prefab, transform.position, transform.rotation);
                 projectile.GetComponent<Projectile>().Initialize(projectileBlock.Speed);
                 return;
