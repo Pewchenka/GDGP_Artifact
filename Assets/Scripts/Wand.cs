@@ -13,15 +13,17 @@ public class Wand : MonoBehaviour
 
     private void Awake()
     {
-        size = 4;
+        size = 6;
         blocks = new SpellBlock[size];
         currentBlockIndex = 0;
 
-        //temporary
+        //temporary to test the spell system
         blocks[0] = new AccelerationModifier(2f);
         blocks[1] = new ProjectileBlock(projectilePrefab, 10f);
-        blocks[2] = new ProjectileBlock(projectilePrefab, 10f);
-        blocks[3] = new ProjectileBlock(projectilePrefab, 3f);
+        blocks[2] = new SplitTwice_Modifier();
+        blocks[3] = new SplitTwice_Modifier();
+        blocks[4] = new AccelerationModifier(0.5f);
+        blocks[5] = new ProjectileBlock(projectilePrefab, 8f);
     }
 
     //Test method (right click on the scirpt component in the inspector)
@@ -51,7 +53,7 @@ public class Wand : MonoBehaviour
 
                 GameObject projectile = Instantiate(projectileBlock.Prefab, transform.position, transform.rotation);
                 Projectile projectileComponent = projectile.GetComponent<Projectile>();
-                projectileComponent.Initialize(projectileBlock.Speed);
+                projectileComponent.Initialize(projectileBlock.Speed, projectileBlock.Prefab);
 
                 // Apply all collected modifiers to the projectile
                 projectileComponent.ApplyModifiers(modifiers);
