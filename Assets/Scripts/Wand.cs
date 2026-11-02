@@ -18,12 +18,13 @@ public class Wand : MonoBehaviour
         currentBlockIndex = 0;
 
         //temporary to test the spell system
-        blocks[0] = new AccelerationModifier(2f);
-        blocks[1] = new ProjectileBlock(projectilePrefab, 10f);
-        blocks[2] = new SplitTwice_Modifier();
-        blocks[3] = new SplitTwice_Modifier();
-        blocks[4] = new AccelerationModifier(0.5f);
-        blocks[5] = new ProjectileBlock(projectilePrefab, 8f);
+        blocks[0] = new SplitTwice_Modifier();
+        blocks[1] = new AccelerationModifier(2f);
+        blocks[2] = new ProjectileBlock(projectilePrefab, 5f);
+        blocks[3] = new AccelerationModifier(2f);
+        blocks[4] = new SplitTwice_Modifier();
+        blocks[5] = new ProjectileBlock(projectilePrefab, 5f);
+
     }
 
     //Test method (right click on the scirpt component in the inspector)
