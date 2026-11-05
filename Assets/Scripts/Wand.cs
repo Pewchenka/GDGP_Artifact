@@ -7,6 +7,9 @@ public class Wand : MonoBehaviour
     private SpellBlock[] blocks;
     private int currentBlockIndex;
 
+    // Shoot from wand
+    [SerializeField] private Transform shootPoint;
+
     //temporary
     [SerializeField] private GameObject projectilePrefab;
 
@@ -29,7 +32,7 @@ public class Wand : MonoBehaviour
 
     //Test method (right click on the scirpt component in the inspector)
     [ContextMenu("Use Spell")]
-    private void UseSpell()
+    public void UseSpell()
     {
         // List to hold modifier to apply to the projectile
         List<ModifierBlock> modifiers = new List<ModifierBlock>();
@@ -52,7 +55,7 @@ public class Wand : MonoBehaviour
             {
                 Debug.Log($"Modifiers collected: {modifiers.Count}");
 
-                GameObject projectile = Instantiate(projectileBlock.Prefab, transform.position, transform.rotation);
+                GameObject projectile = Instantiate(projectileBlock.Prefab, shootPoint.position, shootPoint.rotation);
                 Projectile projectileComponent = projectile.GetComponent<Projectile>();
                 projectileComponent.Initialize(projectileBlock.Speed, projectileBlock.Prefab);
 
