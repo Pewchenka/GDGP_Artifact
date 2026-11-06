@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 
 public class WandAim : MonoBehaviour
@@ -8,7 +9,7 @@ public class WandAim : MonoBehaviour
 
     [SerializeField] private Wand wand;
 
-    private void Update()
+    private void LateUpdate()
     {
         // Update aim direction based on camera
         Vector2 mouseScreen = Mouse.current.position.ReadValue();
@@ -25,7 +26,9 @@ public class WandAim : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        bool pointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(Mouse.current.deviceId);
+
+        if (Mouse.current.leftButton.wasPressedThisFrame && !pointerOverUI)
         {
             wand.UseSpell();
         }
