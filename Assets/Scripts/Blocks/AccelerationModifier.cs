@@ -20,4 +20,6 @@ public class AccelerationModifier : ModifierBlock
         projectile.MultiplySpeed(accelerationMultiplier);
         return true;
     }
+
+    public override SpellBlockId Id => SpellBlockId.Acceleration;
 }

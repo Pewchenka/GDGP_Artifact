@@ -14,4 +14,6 @@ public class SplitTwice_Modifier : ModifierBlock
         projectile.BeginSplit(splitDelay, amount, angle);
         return false;
     }
+
+    public override SpellBlockId Id => SpellBlockId.Split;
 }

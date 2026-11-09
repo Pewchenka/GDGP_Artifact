@@ -13,6 +13,77 @@ public class Wand : MonoBehaviour
     //temporary
     [SerializeField] private GameObject projectilePrefab;
 
+    //Inventory test
+    private readonly SpellInventory spellInventory = new SpellInventory();
+
+    private SpellBlock CreateBlock(SpellBlockId blockId)
+    {
+        switch (blockId)
+        {
+            case SpellBlockId.BasicProjectile:
+                return new ProjectileBlock(projectilePrefab, 5f);
+            case SpellBlockId.Acceleration:
+                return new AccelerationModifier(2f);
+            case SpellBlockId.Split:
+                return new SplitTwice_Modifier();
+            default:
+                throw new System.ArgumentException($"Unknown SpellBlockId: {blockId}");
+        }
+    }
+
+    public bool TryRemoveBlock(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= size)
+        {
+            Debug.LogError("Invalid slot index.");
+            return false;
+        }
+        if (blocks[slotIndex] == null)
+        {
+            return false;
+        }
+        spellInventory.Return(blocks[slotIndex].Id);
+        blocks[slotIndex] = null;
+        return true;
+    }
+
+    public bool TryInstallBlock(int slotIndex, SpellBlockId blockId)
+    {
+        if (slotIndex < 0 || slotIndex >= size)
+        {
+            Debug.LogError("Invalid slot index.");
+            return false;
+        }
+        if (blocks[slotIndex] != null)
+        {
+            return false;
+        }
+        if (spellInventory.TryTake(blockId))
+        {
+            blocks[slotIndex] = CreateBlock(blockId);
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning($"No available blocks of type {blockId} to install.");
+            return false;
+        }
+    }
+
+    public int GetAvailableBlockCount(SpellBlockId blockId)
+    {
+        return spellInventory.GetAvailableCount(blockId);
+    }
+
+    public SpellBlockId? GetBlockIdAt(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= blocks.Length)
+        {
+            return null;
+        }
+
+        return blocks[slotIndex]?.Id;
+    }
 
     private void Awake()
     {
@@ -21,13 +92,21 @@ public class Wand : MonoBehaviour
         currentBlockIndex = 0;
 
         //temporary to test the spell system
-        blocks[0] = new SplitTwice_Modifier();
-        blocks[1] = new AccelerationModifier(2f);
-        blocks[2] = new ProjectileBlock(projectilePrefab, 5f);
-        blocks[3] = new AccelerationModifier(2f);
-        blocks[4] = new SplitTwice_Modifier();
-        blocks[5] = new ProjectileBlock(projectilePrefab, 5f);
+        Debug.Log(TryInstallBlock(1, SpellBlockId.BasicProjectile)); // true
+        Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // true
+        Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // false - слот занят
+        Debug.Log(TryInstallBlock(2, SpellBlockId.Split));            // true - второй блок ещё есть
+        Debug.Log(TryInstallBlock(3, SpellBlockId.Split));            // false - запас исчерпан
 
+        Debug.Log(TryRemoveBlock(0));                     // true
+        Debug.Log(TryRemoveBlock(0));                     // false
+        Debug.Log(TryInstallBlock(3, SpellBlockId.Split)); // true
+
+        Debug.Log(GetAvailableBlockCount(SpellBlockId.Split));
+        Debug.Log(GetAvailableBlockCount(SpellBlockId.Acceleration));
+
+        Debug.Log(GetBlockIdAt(0)); // null
+        Debug.Log(GetBlockIdAt(1)); // BasicProjectile
     }
 
     //Test method (right click on the scirpt component in the inspector)

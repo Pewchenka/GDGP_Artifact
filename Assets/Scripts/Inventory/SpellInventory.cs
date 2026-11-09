@@ -27,4 +27,15 @@ public class SpellInventory
             availableBlocks[blockId]++;
         }
     }
+
+    //Show ammount of blocks left
+    public int GetAvailableCount(SpellBlockId blockId)
+    {
+        if (availableBlocks.TryGetValue(blockId, out int count))
+        {
+            return count;
+        }
+
+        return 0;
+    }
 }

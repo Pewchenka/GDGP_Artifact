@@ -17,4 +17,6 @@ public class ProjectileBlock : SpellBlock
         projectilePrefab = prefab;
         projectileSpeed = speed;
     }
+
+    public override SpellBlockId Id => SpellBlockId.BasicProjectile;
 }
