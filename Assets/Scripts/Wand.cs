@@ -15,6 +15,7 @@ public class Wand : MonoBehaviour
 
     //Inventory test
     private readonly SpellInventory spellInventory = new SpellInventory();
+    public int SlotCount => blocks.Length;
 
     private SpellBlock CreateBlock(SpellBlockId blockId)
     {
@@ -31,6 +32,7 @@ public class Wand : MonoBehaviour
         }
     }
 
+    // Try to remove a block from the specified slot index
     public bool TryRemoveBlock(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= size)
@@ -92,11 +94,12 @@ public class Wand : MonoBehaviour
         currentBlockIndex = 0;
 
         //temporary to test the spell system
+        
         Debug.Log(TryInstallBlock(1, SpellBlockId.BasicProjectile)); // true
         Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // true
-        Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // false - слот занят
-        Debug.Log(TryInstallBlock(2, SpellBlockId.Split));            // true - второй блок ещё есть
-        Debug.Log(TryInstallBlock(3, SpellBlockId.Split));            // false - запас исчерпан
+        Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // false
+        Debug.Log(TryInstallBlock(2, SpellBlockId.Split));            // true
+        Debug.Log(TryInstallBlock(3, SpellBlockId.Split));            // false 
 
         Debug.Log(TryRemoveBlock(0));                     // true
         Debug.Log(TryRemoveBlock(0));                     // false
@@ -107,10 +110,11 @@ public class Wand : MonoBehaviour
 
         Debug.Log(GetBlockIdAt(0)); // null
         Debug.Log(GetBlockIdAt(1)); // BasicProjectile
+        
     }
 
     //Test method (right click on the scirpt component in the inspector)
-    [ContextMenu("Use Spell")]
+    //[ContextMenu("Use Spell")]
     public void UseSpell()
     {
         // List to hold modifier to apply to the projectile

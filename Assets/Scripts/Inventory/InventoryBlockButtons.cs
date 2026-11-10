@@ -1,12 +1,23 @@
+using TMPro;
 using UnityEngine;
 
 public class InventoryBlockButtons : MonoBehaviour
 {
-    [SerializeField] private WandInventoryUI inventoryUI;
-    [SerializeField] private SpellBlockId blockId;
+    private WandInventoryUI inventoryUI;
+    private SpellBlockId blockId;
 
+    public SpellBlockId BlockId { get => blockId; set => blockId = value; }
+
+    public void Setup(WandInventoryUI ui, SpellBlockId id, int count)
+    {
+        inventoryUI = ui;
+        BlockId = id;
+
+        TMP_Text label = GetComponentInChildren<TMP_Text>(true);
+        label.text = $"{id}: {count}";
+    }
     public void Select()
     {
-        inventoryUI.SelectBlock(blockId);
+        inventoryUI.SelectBlock(BlockId);
     }
 }
