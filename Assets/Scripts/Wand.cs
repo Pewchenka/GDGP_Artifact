@@ -93,8 +93,10 @@ public class Wand : MonoBehaviour
         blocks = new SpellBlock[size];
         currentBlockIndex = 0;
 
+        TryInstallBlock(2, SpellBlockId.BasicProjectile);
+
         //temporary to test the spell system
-        
+        /*
         Debug.Log(TryInstallBlock(1, SpellBlockId.BasicProjectile)); // true
         Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // true
         Debug.Log(TryInstallBlock(0, SpellBlockId.Split));            // false
@@ -110,7 +112,7 @@ public class Wand : MonoBehaviour
 
         Debug.Log(GetBlockIdAt(0)); // null
         Debug.Log(GetBlockIdAt(1)); // BasicProjectile
-        
+        */
     }
 
     //Test method (right click on the scirpt component in the inspector)

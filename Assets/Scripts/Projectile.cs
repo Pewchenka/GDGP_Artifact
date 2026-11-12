@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     private int amountOfProjectiles;
     private float splitAngle;
 
+    [SerializeField, Min(0.1f)] private float lifetime = 3f;
 
     // Chain of modifiers
     private List<ModifierBlock> modifierChain;
@@ -38,6 +39,11 @@ public class Projectile : MonoBehaviour
                 Split();
             }
         }
+    }
+
+    private void Awake()
+    {
+        Destroy(gameObject, lifetime);
     }
 
     public void ApplyModifiers(List<ModifierBlock> modifiers)
